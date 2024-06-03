@@ -3,7 +3,6 @@ package umukozi.umukozibi.employe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +13,7 @@ public class EmployeService {
     @Autowired
     public EmployeService(EmployeRepository employeRepository) {
         this.employeRepository = employeRepository;
+
     }
 
     public List<Employe> getEmploye(){
@@ -35,5 +35,24 @@ public class EmployeService {
             throw  new IllegalStateException("L'employe "+EmployeId+"n'existe pas");
         }
         employeRepository.deleteById(EmployeId);
+    }
+
+    public void updateEmploye(Employe employe) {
+        boolean employeFounded=false;
+        for(Employe currentEmploye: this.getEmploye() ){
+            if (currentEmploye.getId() == employe.getId()){
+                employeFounded=true;
+                currentEmploye.setEmail(employe.getEmail());
+                currentEmploye.setNom(employe.getNom());
+                currentEmploye.setPrenom(employe.getPrenom());
+                currentEmploye.setDateNaissaince(employe.getDateNaissaince());
+                currentEmploye.setTelephone(employe.getTelephone());
+            }
+            if (employeFounded){
+                employeRepository.save(currentEmploye);
+            }else {
+                throw new IllegalStateException("L'employe "+employe.getId()+" n'existe pas");
+            }
+        }
     }
 }

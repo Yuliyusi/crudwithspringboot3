@@ -24,8 +24,13 @@ public class EmployeController {
     public void AddNewEmployer(@RequestBody Employe employe){
         employeService.AddNewEmploye(employe);
     }
+    @PutMapping
+    public void updateEmploye(@RequestBody Employe employe){
+        employeService.updateEmploye(employe);
+
+    }
     @DeleteMapping(path = "{EmployeId}")
-    public void deleteEmploye(@PathVariable( "EmployeId") Long EmployeId){
+    public void deleteEmploye(@PathVariable("EmployeId") Long EmployeId){
         employeService.deleteEmploye(EmployeId);
     }
 }
