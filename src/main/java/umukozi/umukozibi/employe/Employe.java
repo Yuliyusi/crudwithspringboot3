@@ -3,11 +3,13 @@ package umukozi.umukozibi.employe;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @Entity
 @Table
 public class Employe {
     @Id
-    @SequenceGenerator(name="employe_sequence",sequenceName = "employe_name",allocationSize = 1)
+    @SequenceGenerator(name="employe_sequence",sequenceName = "employe_seq",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "employe_sequence")
     private long id;
     private String nom;
@@ -15,6 +17,17 @@ public class Employe {
     private String email;
     private String telephone;
     private LocalDate dateNaissaince;
+
+    @OneToOne
+    @JoinColumn(name = "adresse_id")
+    private  Adresse adresse;
+    //Plusieurs employes peuvent travailler dans une meme departement
+    @ManyToOne
+    @JoinColumn(name = "departement_id")
+    private Departement departement;
+    @ManyToMany
+    @JoinTable(name = "employe_mission",joinColumns = @JoinColumn(name = "employe_id"),inverseJoinColumns = @JoinColumn(name = "mission_id"))
+    private List<Mission> missions;
 
     public Employe() {
     }

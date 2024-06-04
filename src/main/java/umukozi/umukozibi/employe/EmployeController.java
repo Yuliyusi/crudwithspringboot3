@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/employes")
@@ -20,6 +21,7 @@ public class EmployeController {
     public List<Employe> getEmploye(){
         return employeService.getEmploye();
     }
+
     @PostMapping
     public void AddNewEmployer(@RequestBody Employe employe){
         employeService.AddNewEmploye(employe);
@@ -29,8 +31,14 @@ public class EmployeController {
         employeService.updateEmploye(employe);
 
     }
+
     @DeleteMapping(path = "{EmployeId}")
     public void deleteEmploye(@PathVariable("EmployeId") Long EmployeId){
         employeService.deleteEmploye(EmployeId);
+    }
+
+    @GetMapping(path = "{EmployeId}")
+    public Optional<Employe> getEmployeById(@PathVariable("EmployeId") Long EmployeId){
+        return employeService.getEmployeById(EmployeId);
     }
 }

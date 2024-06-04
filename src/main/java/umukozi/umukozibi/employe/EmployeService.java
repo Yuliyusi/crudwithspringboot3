@@ -32,11 +32,11 @@ public class EmployeService {
     public void deleteEmploye(Long EmployeId) {
         boolean existid= employeRepository.existsById(EmployeId);
         if (!existid){
-            throw  new IllegalStateException("L'employe "+EmployeId+"n'existe pas");
+            throw  new IllegalStateException("L'employe "+EmployeId+" n'existe pas");
         }
         employeRepository.deleteById(EmployeId);
     }
-
+  /*  $2y$10$5sZ9tAeNoRku/BYUuSsJWOa.ZfhmLFZMgz40Ny0UVZQc.sUij06L2*/
     public void updateEmploye(Employe employe) {
         boolean employeFounded=false;
         for(Employe currentEmploye: this.getEmploye() ){
@@ -54,5 +54,9 @@ public class EmployeService {
                 throw new IllegalStateException("L'employe "+employe.getId()+" n'existe pas");
             }
         }
+    }
+
+    public Optional<Employe> getEmployeById(Long employeId) {
+        return employeRepository.findById(employeId);
     }
 }
