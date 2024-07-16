@@ -46,8 +46,15 @@ public class EmployeController {
         return employeService.addAndAssignEmployer(employe,missionId);
     }
     @PutMapping(path = "{EmployeId}")
-    public Employe updateEmploye(@RequestBody EmployeDTO employeDTO,@PathVariable("EmployeId") long EmployeId){
-        return employeService.updateEmploye(employeDTO,EmployeId);
+    public ResponseEntity updateEmploye(@RequestBody EmployeDTO employeDTO,@PathVariable("EmployeId") long EmployeId){
+        Map<String, Object> data = new HashMap<>();
+        data.put("status", "200");
+        data.put("message", "Success");
+        data.put("data",employeService.updateEmploye(employeDTO,EmployeId));
+        data.put("next", "");
+        return  new ResponseEntity<>(data,HttpStatus.OK);
+
+        //return ;
    }
 
     @DeleteMapping(path = "{EmployeId}")
