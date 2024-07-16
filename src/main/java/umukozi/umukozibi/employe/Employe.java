@@ -4,13 +4,15 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
 public class Employe {
     @Id
-    @SequenceGenerator(name="employe_sequence",sequenceName = "employe_seq",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "employe_sequence")
+//    @SequenceGenerator(name="employe_sequence",sequenceName = "employe_seq",allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "employe_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String nom;
     private String prenom;
@@ -18,7 +20,7 @@ public class Employe {
     private String telephone;
     private LocalDate dateNaissaince;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "adresse_id")
     private  Adresse adresse;
     //Plusieurs employes peuvent travailler dans une meme departement
@@ -27,7 +29,7 @@ public class Employe {
     private Departement departement;
     @ManyToMany
     @JoinTable(name = "employe_mission",joinColumns = @JoinColumn(name = "employe_id"),inverseJoinColumns = @JoinColumn(name = "mission_id"))
-    private List<Mission> missions;
+    private Set<Mission> missions;
 
     public Employe() {
     }
@@ -41,12 +43,25 @@ public class Employe {
         this.dateNaissaince = dateNaissaince;
     }
 
-    public Employe(String nom, String prenom, String email, String telephone, LocalDate dateNaissaince) {
+    public Employe(String nom, String prenom, String email, String telephone, LocalDate dateNaissaince, Adresse adresse, Departement departement, Set<Mission> missions) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.telephone = telephone;
         this.dateNaissaince = dateNaissaince;
+        this.adresse = adresse;
+        this.departement = departement;
+        this.missions = missions;
+    }
+
+    public Employe(String nom, String prenom, String email, String telephone, LocalDate dateNaissaince, Adresse adresse, Departement departement) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.telephone = telephone;
+        this.dateNaissaince = dateNaissaince;
+        this.adresse = adresse;
+        this.departement = departement;
     }
 
     public long getId() {
@@ -97,6 +112,35 @@ public class Employe {
         this.dateNaissaince = dateNaissaince;
     }
 
+    public Adresse getAdresse() {
+        return adresse;
+    }
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public Set<Mission> getMissions() {
+        return missions;
+    }
+
+    public void setAdresse(Adresse adresse) {
+        this.adresse = adresse;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
+    }
+
+    public void setMissions(Set<Mission> missions) {
+        this.missions = missions;
+    }
+    //helper function
+    public void assignMission(Mission mission){
+        missions.add(mission);
+
+    }
+
     @Override
     public String toString() {
         return "Employe{" +
@@ -106,6 +150,9 @@ public class Employe {
                 ", email='" + email + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", dateNaissaince=" + dateNaissaince +
+                ", adresse=" + adresse +
+                ", departement=" + departement +
+                ", missions=" + missions +
                 '}';
     }
 }

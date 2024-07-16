@@ -3,6 +3,9 @@ package umukozi.umukozibi.employe;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
 
 @Entity
 public class Adresse {
@@ -12,9 +15,18 @@ public class Adresse {
     private int id;
     private String nomAdresse;
     private String zonePostale;
-
+    @OneToMany(mappedBy = "adresse" )
+    private List<Employe> employes;
     public Adresse(int id, String nomAdresse, String zonePostale) {
         this.id = id;
+        this.nomAdresse = nomAdresse;
+        this.zonePostale = zonePostale;
+    }
+
+    public Adresse() {
+    }
+
+    public Adresse(String nomAdresse, String zonePostale) {
         this.nomAdresse = nomAdresse;
         this.zonePostale = zonePostale;
     }

@@ -1,9 +1,9 @@
 package umukozi.umukozibi.employe;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class Mission {
@@ -11,10 +11,23 @@ public class Mission {
     @GeneratedValue
     private int id;
     private String descriptionMission;
-
+    @ManyToMany
+    @JoinTable(name = "employe_mission",joinColumns = @JoinColumn(name = "mission_id"),inverseJoinColumns = @JoinColumn(name = "employe_id"))
+    private Set<Employe> employes;
     public Mission(int id, String descriptionMission) {
         this.id = id;
         this.descriptionMission = descriptionMission;
+    }
+
+    public Mission() {
+    }
+
+    public Set<Employe> getEmployes() {
+        return employes;
+    }
+
+    public void setEmployes(Set<Employe> employes) {
+        this.employes = employes;
     }
 
     public int getId() {

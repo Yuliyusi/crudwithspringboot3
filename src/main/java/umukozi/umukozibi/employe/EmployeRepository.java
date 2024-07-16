@@ -11,4 +11,5 @@ public interface EmployeRepository extends JpaRepository<Employe,Long> {
     @Query(value="Select e.* from employe e where e.email =?1 LIMIT 1", nativeQuery = true)
     Optional<Employe> findEmployeByEmail(String email);
 
+
 }

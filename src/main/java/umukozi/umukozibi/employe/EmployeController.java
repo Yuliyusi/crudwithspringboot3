@@ -1,10 +1,14 @@
 package umukozi.umukozibi.employe;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -18,19 +22,33 @@ public class EmployeController {
     }
 
     @GetMapping
-    public List<Employe> getEmploye(){
-        return employeService.getEmploye();
+    public ResponseEntity getEmploye(){
+            Map<String, Object> data = new HashMap<>();
+            data.put("status", "200");
+            data.put("message", "Success");
+            data.put("data", employeService.getEmploye());
+            data.put("next", "");
+         return new ResponseEntity<>(data,HttpStatus.OK);
     }
 
     @PostMapping
-    public void AddNewEmployer(@RequestBody Employe employe){
-        employeService.AddNewEmploye(employe);
+    public ResponseEntity AddNewEmployer(@RequestBody EmployeDTO employeDTO){
+        Map<String, Object> data = new HashMap<>();
+        data.put("status", "200");
+        data.put("message", "Success");
+        data.put("data",employeService.AddNewEmploye(employeDTO));
+        data.put("next", "");
+        return  new ResponseEntity<>(data,HttpStatus.OK);
+        //return ;
     }
-    @PutMapping
-    public void updateEmploye(@RequestBody Employe employe){
-        employeService.updateEmploye(employe);
-
+    @PostMapping(path ="/assign-mission/{missionId}")
+    public Employe addAndAssignEmployer(@RequestBody Employe employe,@PathVariable("missionId") int missionId){
+        return employeService.addAndAssignEmployer(employe,missionId);
     }
+    @PutMapping(path = "{EmployeId}")
+    public Employe updateEmploye(@RequestBody EmployeDTO employeDTO,@PathVariable("EmployeId") long EmployeId){
+        return employeService.updateEmploye(employeDTO,EmployeId);
+   }
 
     @DeleteMapping(path = "{EmployeId}")
     public void deleteEmploye(@PathVariable("EmployeId") Long EmployeId){

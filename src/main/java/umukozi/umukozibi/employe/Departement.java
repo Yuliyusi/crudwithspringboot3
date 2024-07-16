@@ -23,6 +23,15 @@ public class Departement {
         this.description = description;
     }
 
+    public Departement() {
+    }
+
+    public Departement(int id, String description, List<Employe> employes) {
+        this.id = id;
+        this.description = description;
+        this.employes = employes;
+    }
+
     public int getId() {
         return id;
     }
